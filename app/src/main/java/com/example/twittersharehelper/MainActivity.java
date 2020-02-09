@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
     static MainViewModel obtainViewMode(@NonNull FragmentActivity activity) {
         ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(activity.getApplication());
-
         return new ViewModelProvider(activity, factory).get(MainViewModel.class);
     }
 
@@ -61,10 +60,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void shareToTwitter(String text) {
+    private void shareToTwitter(@NonNull String text) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
-        intent.setType("text/plain");
+        intent.setType(TEXT_PLAIN);
         intent.putExtra(Intent.EXTRA_TEXT, text);
         startActivity(intent);
     }

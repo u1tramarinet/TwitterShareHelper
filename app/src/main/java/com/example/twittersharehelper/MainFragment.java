@@ -54,15 +54,15 @@ public class MainFragment extends Fragment {
         viewModel.getBundle().observe(this, new Observer<Bundle>() {
             @Override
             public void onChanged(Bundle bundle) {
-                parseBundle(bundle);
+                editText.setText(parseBundle(bundle));
             }
         });
     }
 
-    private void parseBundle(@NonNull Bundle bundle) {
+    private String parseBundle(@NonNull Bundle bundle) {
         CharSequence subject = bundle.getCharSequence(Intent.EXTRA_SUBJECT, "");
         CharSequence text = bundle.getCharSequence(Intent.EXTRA_TEXT, "");
-        String content = subject + " - " + text;
-        editText.setText(content);
+        return subject + " - " + text;
+
     }
 }
