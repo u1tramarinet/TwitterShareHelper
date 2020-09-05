@@ -7,7 +7,10 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,11 +19,15 @@ import androidx.lifecycle.Observer;
 
 import com.example.twittersharehelper.MainActivity;
 import com.example.twittersharehelper.R;
+import com.example.twittersharehelper.model.Textable;
+
+import java.util.List;
 
 public class MainFragment extends Fragment {
 
     private EditText editText;
     private MainViewModel viewModel;
+    private MainAdapter adapter;
 
     public MainFragment() {
     }
@@ -60,6 +67,16 @@ public class MainFragment extends Fragment {
 
             }
         });
+        adapter = new MainAdapter(requireContext(), R.id.list_view);
+        ListView listView = root.findViewById(R.id.list_view);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Textable item = (Textable)(parent).getItemAtPosition(position);
+                editText.setText(item.toText());
+            }
+        });
     }
 
     @Override
@@ -74,6 +91,14 @@ public class MainFragment extends Fragment {
             @Override
             public void onChanged(String s) {
                 editText.setText(s);
+            }
+        });
+        viewModel.getCandidate().observe(getViewLifecycleOwner(), new Observer<List<Textable>>() {
+            @Override
+            public void onChanged(List<Textable> candidates) {
+                Toast.makeText(getContext(), "candidates=" + candidates.size(), Toast.LENGTH_SHORT).show();
+                adapter.updateList(candidates);
+                adapter.notifyDataSetChanged();
             }
         });
     }

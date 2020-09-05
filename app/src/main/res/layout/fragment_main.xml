@@ -7,20 +7,60 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.main.MainFragment">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <TextView
+        android:id="@+id/candidate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="候補"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@id/guideline" />
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@id/edit_text"
+        app:layout_constraintTop_toBottomOf="@id/candidate"
+        tools:listitem="@layout/list_item" />
+
     <EditText
         android:id="@+id/edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/white"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
+        android:padding="10dp"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@id/share_button"
-        tools:ignore="LabelFor" />
+        tools:ignore="LabelFor"
+        tools:text="aaaaaaa" />
 
     <Button
         android:id="@+id/share_button"
-        android:layout_width="wrap_content"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:text="@string/share"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

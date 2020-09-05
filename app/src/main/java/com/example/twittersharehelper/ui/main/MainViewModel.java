@@ -12,12 +12,18 @@ import com.example.twittersharehelper.model.Textable;
 import com.example.twittersharehelper.model.parser.Classifier;
 import com.example.twittersharehelper.model.parser.Parser;
 
+import java.util.List;
 import java.util.Set;
 
 public class MainViewModel extends ViewModel {
-    private MutableLiveData<Bundle> bundleData = new MutableLiveData<>();
-    private MutableLiveData<String> textData = new MutableLiveData<>();
-    private MutableLiveData<String> shareEvent = new MutableLiveData<>();
+    @NonNull
+    private final MutableLiveData<Bundle> bundleData = new MutableLiveData<>();
+    @NonNull
+    private final MutableLiveData<List<Textable>> candidateData = new MutableLiveData<>();
+    @NonNull
+    private final MutableLiveData<String> textData = new MutableLiveData<>();
+    @NonNull
+    private final MutableLiveData<String> shareEvent = new MutableLiveData<>();
 
     @NonNull
     public LiveData<Bundle> getBundle() {
@@ -33,8 +39,15 @@ public class MainViewModel extends ViewModel {
             total.append(bundle.get(key));
         }
         Parser parser = Classifier.classify(total.toString());
-        String text = ((Textable)(parser.parse(bundle).get(0))).toText();
+        List<Textable> list = parser.parse(bundle);
+        candidateData.postValue(list);
+        String text = ((list.get(0))).toText();
         setText(text);
+    }
+
+    @NonNull
+    public LiveData<List<Textable>> getCandidate() {
+        return candidateData;
     }
 
     @NonNull
