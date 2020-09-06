@@ -11,4 +11,6 @@ import java.util.List;
 public interface Parser<T extends Textable> {
     @NonNull
     List<T> parse(@NonNull Bundle source);
+
+    boolean match(@NonNull String text);
 }

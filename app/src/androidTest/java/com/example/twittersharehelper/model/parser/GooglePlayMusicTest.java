@@ -13,8 +13,6 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 public class GooglePlayMusicTest {
     @NonNull
     private final GooglePlayMusic parser = new GooglePlayMusic();
@@ -34,7 +32,7 @@ public class GooglePlayMusicTest {
 
     private void assertEquals(@NonNull Song song, @Nullable String artist, @Nullable String track, @Nullable String url) {
         Assert.assertEquals(artist, song.artist);
-        Assert.assertEquals(track, song.track);
+        Assert.assertEquals(track, song.title);
         Assert.assertEquals(url, song.url);
     }
 

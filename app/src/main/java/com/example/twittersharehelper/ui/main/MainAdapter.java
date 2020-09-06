@@ -47,9 +47,10 @@ public class MainAdapter extends ArrayAdapter<Textable> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
+        position = getCount() - position - 1;
         Textable item = getItem(position);
         if (item != null) {
-            ((TextView)convertView.findViewById(R.id.content)).setText(item.toText());
+            ((TextView)convertView.findViewById(R.id.content)).setText(position + ":" + item.toText());
         }
         return convertView;
     }

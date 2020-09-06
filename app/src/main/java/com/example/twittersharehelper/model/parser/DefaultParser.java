@@ -10,7 +10,16 @@ import com.example.twittersharehelper.model.PlainText;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Default implements Parser<PlainText> {
+public class DefaultParser implements Parser<PlainText> {
+    private static final DefaultParser INSTANCE = new DefaultParser();
+
+    private DefaultParser() {
+    }
+
+    public static DefaultParser getInstance() {
+        return INSTANCE;
+    }
+
     @NonNull
     @Override
     public List<PlainText> parse(@NonNull Bundle source) {
@@ -19,8 +28,13 @@ public class Default implements Parser<PlainText> {
         CharSequence text = source.getCharSequence(Intent.EXTRA_TEXT, "");
         PlainText plainText = new PlainText();
         plainText.subject = subject.toString();
-        plainText.text = plainText.toString();
+        plainText.text = text.toString();
         texts.add(plainText);
         return texts;
+    }
+
+    @Override
+    public boolean match(@NonNull String text) {
+        return true;
     }
 }

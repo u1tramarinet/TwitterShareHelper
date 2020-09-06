@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintBottom_toBottomOf="@id/candidate"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.3" />
 
     <TextView
         android:id="@+id/candidate"
@@ -27,15 +27,15 @@
         android:layout_height="wrap_content"
         android:text="候補"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@id/guideline" />
+        app:layout_constraintBottom_toTopOf="@id/list_view" />
 
     <ListView
         android:id="@+id/list_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        android:stackFromBottom="true"
         app:layout_constraintBottom_toTopOf="@id/edit_text"
-        app:layout_constraintTop_toBottomOf="@id/candidate"
         tools:listitem="@layout/list_item" />
 
     <EditText

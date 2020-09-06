@@ -1,5 +1,7 @@
 package com.example.twittersharehelper.model;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -31,6 +33,10 @@ public class PlainText implements Textable {
     @NonNull
     @Override
     public String toText() {
-        return subject + " - " + text;
+        String divider = "";
+        if (!TextUtils.isEmpty(subject) && !TextUtils.isEmpty(text)) {
+            divider = " - ";
+        }
+        return subject + divider + text;
     }
 }

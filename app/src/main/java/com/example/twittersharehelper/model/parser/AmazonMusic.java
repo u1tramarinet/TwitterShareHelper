@@ -6,26 +6,25 @@ import com.example.twittersharehelper.model.Song;
 
 import java.util.List;
 
-public class GooglePlayMusic extends TextPlainParser<Song> {
+public class AmazonMusic extends TextPlainParser<Song> {
+    private static final String PREFIX = "Amazon Music内で";
+    private static final String SUFFIX = "を見る";
     private static final String SPLIT_WORD = "の";
-    private static final String SUFFIX = "をチェック";
-    private static final GooglePlayMusic INSTANCE = new GooglePlayMusic();
+    private static final AmazonMusic INSTANCE = new AmazonMusic();
 
-    private GooglePlayMusic() {
-    }
-
-    public static GooglePlayMusic getInstance() {
+    public static AmazonMusic getInstance() {
         return INSTANCE;
     }
 
     @Override
     protected List<Song> parse(@NonNull String subject, @NonNull String text) {
-        subject = ParseUtils.replaceEmpty(subject, SUFFIX);
+        text = ParseUtils.replaceEmpty(text, subject + "\n");
+        subject = ParseUtils.removeFix(subject, PREFIX, SUFFIX);
         return ParseUtils.getCandidatesByDivide(subject, text, SPLIT_WORD);
     }
 
     @Override
     public boolean match(@NonNull String text) {
-        return text.contains("play.google.com");
+        return text.contains("music.amazon.co.jp");
     }
 }
