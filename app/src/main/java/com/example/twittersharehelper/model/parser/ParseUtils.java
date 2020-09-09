@@ -8,6 +8,8 @@ import com.example.twittersharehelper.model.Song;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ParseUtils {
 
@@ -20,7 +22,9 @@ public class ParseUtils {
 
     static String replaceEmpty(@NonNull String input, @NonNull String... targets) {
         for (String target : targets) {
-            input = input.replaceFirst(target, "");
+            Pattern pattern = Pattern.compile(target, Pattern.LITERAL);
+            Matcher matcher = pattern.matcher(input);
+            input = matcher.replaceFirst("");
         }
         return input;
     }

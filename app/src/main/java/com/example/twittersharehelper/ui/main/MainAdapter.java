@@ -16,6 +16,7 @@ import com.example.twittersharehelper.model.Textable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MainAdapter extends ArrayAdapter<Textable> {
     private List<Textable> list = new ArrayList<>();
@@ -50,7 +51,8 @@ public class MainAdapter extends ArrayAdapter<Textable> {
         position = getCount() - position - 1;
         Textable item = getItem(position);
         if (item != null) {
-            ((TextView)convertView.findViewById(R.id.content)).setText(position + ":" + item.toText());
+            String format = "%d: %s";
+            ((TextView)convertView.findViewById(R.id.content)).setText(String.format(Locale.JAPAN, format, position, item.toText()));
         }
         return convertView;
     }

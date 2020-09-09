@@ -31,7 +31,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public void setBundle(@NonNull Bundle bundle) {
-        bundleData.postValue(bundle);
+        bundleData.setValue(bundle);
         Set<String> keySet = bundle.keySet();
         StringBuilder total = new StringBuilder();
         for (String key : keySet) {
@@ -40,7 +40,7 @@ public class MainViewModel extends ViewModel {
         }
         Parser parser = Classifier.classify(total.toString());
         List<Textable> list = parser.parse(bundle);
-        candidateData.postValue(list);
+        candidateData.setValue(list);
         String text = ((list.get(0))).toText();
         setText(text);
     }
@@ -56,11 +56,11 @@ public class MainViewModel extends ViewModel {
     }
 
     public void setText(@NonNull String text) {
-        textData.postValue(text);
+        textData.setValue(text);
     }
 
     public void requestShare() {
-        shareEvent.postValue(textData.getValue());
+        shareEvent.setValue(textData.getValue());
     }
 
     public LiveData<String> getShareEvent() {

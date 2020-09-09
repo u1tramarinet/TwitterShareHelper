@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,25 +47,11 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String text = editText.getText().toString();
+                Log.d(MainFragment.class.getSimpleName(), "text=" + text);
                 if (!TextUtils.isEmpty(text)) {
+                    viewModel.setText(text);
                     viewModel.requestShare();
                 }
-            }
-        });
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                viewModel.setText(charSequence.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
             }
         });
         adapter = new MainAdapter(requireContext(), R.id.list_view);
@@ -96,7 +83,6 @@ public class MainFragment extends Fragment {
         viewModel.getCandidate().observe(getViewLifecycleOwner(), new Observer<List<Textable>>() {
             @Override
             public void onChanged(List<Textable> candidates) {
-                Toast.makeText(getContext(), "candidates=" + candidates.size(), Toast.LENGTH_SHORT).show();
                 adapter.updateList(candidates);
                 adapter.notifyDataSetChanged();
             }
