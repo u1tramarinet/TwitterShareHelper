@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.twittersharehelper.model.Result;
 import com.example.twittersharehelper.model.Textable;
-import com.example.twittersharehelper.model.parser.Classifier;
+import com.example.twittersharehelper.model.Classifier;
 import com.example.twittersharehelper.model.parser.Parser;
 
 import java.util.List;
@@ -24,6 +26,8 @@ public class MainViewModel extends ViewModel {
     private final MutableLiveData<String> textData = new MutableLiveData<>();
     @NonNull
     private final MutableLiveData<String> shareEvent = new MutableLiveData<>();
+    @NonNull
+    private final MutableLiveData<Result> resultData = new MutableLiveData<>();
 
     @NonNull
     public LiveData<Bundle> getBundle() {
@@ -43,6 +47,7 @@ public class MainViewModel extends ViewModel {
         candidateData.setValue(list);
         String text = ((list.get(0))).toText();
         setText(text);
+        setResult(new Result(bundle, parser, list));
     }
 
     @NonNull
@@ -65,5 +70,13 @@ public class MainViewModel extends ViewModel {
 
     public LiveData<String> getShareEvent() {
         return shareEvent;
+    }
+
+    private void setResult(@Nullable Result result) {
+        resultData.setValue(result);
+    }
+
+    public LiveData<Result> getResult() {
+        return resultData;
     }
 }

@@ -7,8 +7,7 @@ import com.example.twittersharehelper.model.Song;
 import java.util.List;
 
 public class AmazonMusic extends TextPlainParser<Song> {
-    private static final String PREFIX = "Amazon Music内で";
-    private static final String SUFFIX = "を見る";
+    private static final Affix AFFIX = new Affix("Amazon Music内で", "を見る");
     private static final String SPLIT_WORD = "の";
     private static final AmazonMusic INSTANCE = new AmazonMusic();
 
@@ -19,7 +18,7 @@ public class AmazonMusic extends TextPlainParser<Song> {
     @Override
     protected List<Song> parse(@NonNull String subject, @NonNull String text) {
         text = ParseUtils.replaceEmpty(text, subject + "\n");
-        subject = ParseUtils.removeFix(subject, PREFIX, SUFFIX);
+        subject = ParseUtils.removeFix(subject, AFFIX.prefix, AFFIX.suffix);
         return ParseUtils.getCandidatesByDivide(subject, text, SPLIT_WORD);
     }
 

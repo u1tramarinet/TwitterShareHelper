@@ -1,9 +1,7 @@
 package com.example.twittersharehelper.ui.main;
 
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +9,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +19,9 @@ import androidx.lifecycle.Observer;
 
 import com.example.twittersharehelper.MainActivity;
 import com.example.twittersharehelper.R;
+import com.example.twittersharehelper.model.Result;
 import com.example.twittersharehelper.model.Textable;
+import com.example.twittersharehelper.util.SettingsUtil;
 
 import java.util.List;
 
@@ -29,6 +30,8 @@ public class MainFragment extends Fragment {
     private EditText editText;
     private MainViewModel viewModel;
     private MainAdapter adapter;
+    private TextView resultText;
+    private ScrollView debugView;
 
     public MainFragment() {
     }
@@ -40,9 +43,20 @@ public class MainFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        boolean isDeveloperMode = SettingsUtil.isDeveloperMode(requireContext());
+        if (debugView != null) {
+            debugView.setVisibility((isDeveloperMode) ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    @Override
     public void onViewCreated(@NonNull View root, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(root, savedInstanceState);
         editText = root.findViewById(R.id.edit_text);
+        resultText = root.findViewById(R.id.result);
+        debugView = root.findViewById(R.id.debug);
         root.findViewById(R.id.share_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,6 +99,12 @@ public class MainFragment extends Fragment {
             public void onChanged(List<Textable> candidates) {
                 adapter.updateList(candidates);
                 adapter.notifyDataSetChanged();
+            }
+        });
+        viewModel.getResult().observe(getViewLifecycleOwner(), new Observer<Result>() {
+            @Override
+            public void onChanged(Result result) {
+                resultText.setText(result.toString());
             }
         });
     }
