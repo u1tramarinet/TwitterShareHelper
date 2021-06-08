@@ -1,4 +1,4 @@
-package com.example.twittersharehelper;
+package com.example.twittersharehelper.ui;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -6,7 +6,9 @@ import androidx.lifecycle.Observer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.example.twittersharehelper.R;
 import com.example.twittersharehelper.ui.main.MainViewModel;
 
 import java.util.Objects;
@@ -15,6 +17,7 @@ public class MainActivity extends BaseActivity {
 
     private MainViewModel viewModel;
     private static final String TEXT_PLAIN = "text/plain";
+    private static final String TEXT = "text/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +48,24 @@ public class MainActivity extends BaseActivity {
     }
 
     private void readBundle(@NonNull Intent intent) {
+        String action = intent.getAction();
         String type = intent.getType();
+        Log.d(MainActivity.class.getSimpleName(), "readBundle(): receive intent[action=" + action + ", type=" + type + "]");
 
-        if (TEXT_PLAIN.equals(type)) {
-            Bundle extras = intent.getExtras();
-            Objects.requireNonNull(extras);
-            viewModel.setBundle(extras);
+        if (null == type) {
+            return;
+        }
+
+        if (Intent.ACTION_SEND.equals(action)) {
+            if (TEXT_PLAIN.equals(type)) {
+                Bundle extras = intent.getExtras();
+                Objects.requireNonNull(extras);
+                viewModel.setBundle(extras);
+            } else if (type.startsWith(TEXT)) {
+                /* NOP */
+            }
+        } else if (Intent.ACTION_SEND_MULTIPLE.equals(action)) {
+            /* NOP */
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.twittersharehelper;
+package com.example.twittersharehelper.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

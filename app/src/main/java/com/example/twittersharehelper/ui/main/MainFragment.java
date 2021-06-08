@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
-import com.example.twittersharehelper.MainActivity;
+import com.example.twittersharehelper.ui.MainActivity;
 import com.example.twittersharehelper.R;
 import com.example.twittersharehelper.model.Result;
 import com.example.twittersharehelper.model.Textable;
@@ -74,7 +74,7 @@ public class MainFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Textable item = (Textable)(parent).getItemAtPosition(position);
+                Textable item = (Textable) (parent).getItemAtPosition(position);
                 editText.setText(item.toText());
             }
         });
