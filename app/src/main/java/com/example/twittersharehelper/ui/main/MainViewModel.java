@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.example.twittersharehelper.model.parser.Parser;
@@ -35,12 +34,7 @@ public class MainViewModel extends ViewModel implements OnItemClickHandler<Parse
 
     public MainViewModel() {
         super();
-        shareButtonEnabledData.addSource(shareTextData, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                shareButtonEnabledData.postValue(!s.isEmpty());
-            }
-        });
+        shareButtonEnabledData.addSource(shareTextData, s -> shareButtonEnabledData.postValue(!s.isEmpty()));
     }
 
     @NonNull
