@@ -1,19 +1,18 @@
 package com.example.twittersharehelper.ui;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.twittersharehelper.R;
 import com.example.twittersharehelper.ui.main.MainViewModel;
 
 import java.util.Objects;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends AppCompatActivity {
 
     private MainViewModel viewModel;
     private static final String TEXT_PLAIN = "text/plain";
@@ -33,25 +32,14 @@ public class MainActivity extends BaseActivity {
         readBundle(intent);
     }
 
-    public static MainViewModel obtainMainViewModel(@NonNull FragmentActivity activity) {
-        return obtainViewModel(activity, MainViewModel.class);
-    }
-
     private void initViewModel() {
-        viewModel = obtainMainViewModel(this);
-        viewModel.getShareEvent().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                shareToTwitter(s);
-            }
-        });
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        viewModel.getShareEvent().observe(this, this::shareToTwitter);
     }
 
     private void readBundle(@NonNull Intent intent) {
         String action = intent.getAction();
         String type = intent.getType();
-        Log.d(MainActivity.class.getSimpleName(), "readBundle(): receive intent[action=" + action + ", type=" + type + "]");
-
         if (null == type) {
             return;
         }

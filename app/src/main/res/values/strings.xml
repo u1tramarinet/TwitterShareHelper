@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">TShareHelper</string>
+    <string name="app_name">Twitter共有ヘルパー</string>
 
     <string name="share">share</string>
     <string name="candidate">候補</string>
+    <string name="format_item">候補 %d\n%s</string>
 </resources>

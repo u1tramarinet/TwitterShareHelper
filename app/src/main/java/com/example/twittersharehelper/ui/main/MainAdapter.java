@@ -1,59 +1,76 @@
 package com.example.twittersharehelper.ui.main;
 
-import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.twittersharehelper.R;
-import com.example.twittersharehelper.model.Textable;
+import com.example.twittersharehelper.databinding.ListItemBinding;
+import com.example.twittersharehelper.model.parser.Parser;
+import com.example.twittersharehelper.util.OnItemClickHandler;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+public class MainAdapter extends ListAdapter<Parser.ParseResult, MainAdapter.MainViewHolder> {
+    @NonNull
+    private final LifecycleOwner lifecycleOwner;
+    @NonNull
+    private final OnItemClickHandler<Parser.ParseResult> handler;
 
-public class MainAdapter extends ArrayAdapter<Textable> {
-    private List<Textable> list = new ArrayList<>();
-
-    public MainAdapter(@NonNull Context context, int resource) {
-        super(context, resource);
-    }
-
-    public void updateList(@NonNull List<Textable> list) {
-        this.list = list;
-        clear();
-        addAll(this.list);
-    }
-
-    @Override
-    public int getCount() {
-        return this.list.size();
-    }
-
-    @Nullable
-    @Override
-    public Textable getItem(int position) {
-        return this.list.get(position);
+    protected MainAdapter(@NonNull LifecycleOwner lifecycleOwner, @NonNull OnItemClickHandler<Parser.ParseResult> handler) {
+        super(new DiffItemCallback());
+        this.lifecycleOwner = lifecycleOwner;
+        this.handler = handler;
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
+    public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        return new MainViewHolder(ListItemBinding.inflate(inflater, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
+        holder.bind(getItem(position), lifecycleOwner, handler, position);
+    }
+
+    public static class MainViewHolder extends RecyclerView.ViewHolder {
+        @NonNull
+        private final ListItemBinding binding;
+
+        public MainViewHolder(@NonNull ListItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
-        position = getCount() - position - 1;
-        Textable item = getItem(position);
-        if (item != null) {
-            String format = "%d: %s";
-            ((TextView)convertView.findViewById(R.id.content)).setText(String.format(Locale.JAPAN, format, position, item.toText()));
+
+        private void bind(@NonNull Parser.ParseResult item, @NonNull LifecycleOwner lifecycleOwner, @NonNull OnItemClickHandler<Parser.ParseResult> handler, int position) {
+            binding.setLifecycleOwner(lifecycleOwner);
+            binding.setItem(item);
+            binding.setHandler(handler);
+            binding.setPosition(position);
         }
-        return convertView;
+    }
+
+    private static class DiffItemCallback extends DiffUtil.ItemCallback<Parser.ParseResult> {
+
+        @Override
+        public boolean areItemsTheSame(@NonNull Parser.ParseResult oldItem, @NonNull Parser.ParseResult newItem) {
+            return areValueSame(oldItem, newItem);
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Parser.ParseResult oldItem, @NonNull Parser.ParseResult newItem) {
+            return areValueSame(oldItem, newItem);
+        }
+
+        private boolean areValueSame(@NonNull Parser.ParseResult oldItem, @NonNull Parser.ParseResult newItem) {
+            String oldText = oldItem.value.convert();
+            String newText = newItem.value.convert();
+            return TextUtils.equals(oldText, newText);
+        }
     }
 }

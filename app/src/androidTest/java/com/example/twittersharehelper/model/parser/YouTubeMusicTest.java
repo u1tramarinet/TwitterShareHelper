@@ -6,8 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.twittersharehelper.model.Media;
-import com.example.twittersharehelper.model.Song;
+import com.example.twittersharehelper.model.content.Media;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class YouTubeMusicTest {
-    private final YouTubeMusic parser = YouTubeMusic.getInstance();
+    private final YouTubeMusicParser parser = YouTubeMusicParser.getInstance();
     @Test
     public void parse() {
         String artist = null;

@@ -11,7 +11,7 @@ public class SettingsUtil {
     }
 
     public static boolean isDeveloperMode(@NonNull Context context) {
-        return Settings.Secure.getInt(context.getContentResolver(),
+        return Settings.Global.getInt(context.getContentResolver(),
                 Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) == 1;
     }
 }
