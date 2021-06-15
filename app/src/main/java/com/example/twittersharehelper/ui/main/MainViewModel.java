@@ -22,9 +22,9 @@ public class MainViewModel extends ViewModel implements OnItemClickHandler<Parse
     @NonNull
     private final MutableLiveData<String> shareTextData = new MutableLiveData<>();
     @NonNull
-    private final MutableLiveData<String> shareEvent = new MutableLiveData<>();
+    private final MutableLiveData<String> shareEventData = new MutableLiveData<>();
     @NonNull
-    private final MutableLiveData<List<Parser.ParseResult>> resultData = new MutableLiveData<>();
+    private final MutableLiveData<List<Parser.ParseResult>> parseResultData = new MutableLiveData<>();
     @NonNull
     private final MutableLiveData<String> debugInfoData = new MutableLiveData<>();
     @NonNull
@@ -42,7 +42,7 @@ public class MainViewModel extends ViewModel implements OnItemClickHandler<Parse
         return debugInfoData;
     }
 
-    public void setDebuggable(boolean debuggable) {
+    public void updateDebuggable(boolean debuggable) {
         debuggableData.setValue(debuggable);
     }
 
@@ -54,7 +54,7 @@ public class MainViewModel extends ViewModel implements OnItemClickHandler<Parse
     public void setBundle(@NonNull Bundle bundle) {
         bundleData.setValue(bundle);
         List<Parser.ParseResult> parseResults = new Parser().parse(bundle);
-        resultData.postValue(parseResults);
+        parseResultData.postValue(parseResults);
         updateResult(parseResults.get(0));
     }
 
@@ -63,23 +63,23 @@ public class MainViewModel extends ViewModel implements OnItemClickHandler<Parse
         return shareTextData;
     }
 
-    public void onShareClick(View view) {
-        shareEvent.setValue(shareTextData.getValue());
+    @NonNull
+    public LiveData<String> shareEvent() {
+        return shareEventData;
     }
 
     @NonNull
-    public LiveData<String> getShareEvent() {
-        return shareEvent;
-    }
-
-    @NonNull
-    public LiveData<List<Parser.ParseResult>> getResult() {
-        return resultData;
+    public LiveData<List<Parser.ParseResult>> parseResult() {
+        return parseResultData;
     }
 
     @NonNull
     public LiveData<Boolean> shareButtonEnabled() {
         return shareButtonEnabledData;
+    }
+
+    public void onShareClick(View view) {
+        shareEventData.setValue(shareTextData.getValue());
     }
 
     @Override
@@ -106,11 +106,11 @@ public class MainViewModel extends ViewModel implements OnItemClickHandler<Parse
         return joiner.toString();
     }
 
+    @NonNull
     private String convertParseResultToString(@NonNull Parser.ParseResult result) {
         StringJoiner joiner = new StringJoiner("\n");
         joiner.add("[PARSER]");
         joiner.add("  " + result.parser.getClass().getSimpleName());
-
         joiner.add("[RESULT]");
         joiner.add("  " + result.value.convert());
         return joiner.toString();

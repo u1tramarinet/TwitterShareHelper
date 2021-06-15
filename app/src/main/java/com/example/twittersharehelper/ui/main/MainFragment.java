@@ -46,7 +46,7 @@ public class MainFragment extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(root.getContext(), DividerItemDecoration.VERTICAL));
         MainAdapter adapter = new MainAdapter(getViewLifecycleOwner(), viewModel);
         recyclerView.setAdapter(adapter);
-        viewModel.getResult().observe(getViewLifecycleOwner(), adapter::submitList);
+        viewModel.parseResult().observe(getViewLifecycleOwner(), adapter::submitList);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class MainFragment extends Fragment {
     private void updateDebuggable() {
         if (null != viewModel) {
             boolean isDeveloperMode = SettingsUtil.isDeveloperMode(requireContext());
-            viewModel.setDebuggable(isDeveloperMode);
+            viewModel.updateDebuggable(isDeveloperMode);
         }
     }
 }

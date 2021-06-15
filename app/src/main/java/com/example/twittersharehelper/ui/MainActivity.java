@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initViewModel() {
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        viewModel.getShareEvent().observe(this, this::shareToTwitter);
+        viewModel.shareEvent().observe(this, this::shareToTwitter);
     }
 
     private void readBundle(@NonNull Intent intent) {
